@@ -1,0 +1,8 @@
+{
+  "name": "MK.MVP.DI",
+  "rootNamespace": "MK.MVP.DI",
+  "references": [
+    "MK.DependencyInjection",
+    "MK.MVP"
+  ]
+}
