@@ -11,7 +11,11 @@ namespace MK.MVP
         internal UniTask OpenAsync();
         internal UniTask CloseAsync();
 
-        internal void BindView(IView   view);
-        internal void BindModel(object model);
+        internal void BindView(IView view);
+    }
+
+    public interface IPresenter<in TModel> : IPresenter
+    {
+        internal void BindModel(TModel model);
     }
 }

@@ -7,17 +7,21 @@ namespace MK.MVP
     using MK.AssetsManager;
     using MK.DependencyInjection;
     using MK.Extensions;
+    using MK.Log;
     using UnityEngine;
+    using ILogger = MK.Log.ILogger;
 
     public sealed class ViewUIService : IViewUIService
     {
         private readonly IAssetsManager assetsManager;
         private readonly IResolver      resolver;
+        private readonly ILogger        logger;
 
-        public ViewUIService(IAssetsManager assetsManager, IResolver resolver)
+        public ViewUIService(IAssetsManager assetsManager, IResolver resolver, ILoggerManager logger)
         {
             this.assetsManager = assetsManager;
             this.resolver      = resolver;
+            this.logger        = logger.GetLogger(this);
         }
 
         private readonly List<IPresenter>             viewStack       = new();
@@ -41,9 +45,9 @@ namespace MK.MVP
         private TPresenter GetPresenter<TPresenter>() where TPresenter : IPresenter
         {
             var type = typeof(TPresenter);
-            if (this.typeToPresenter.TryGetValue(type, out var Presenter))
+            if (this.typeToPresenter.TryGetValue(type, out var presenter))
             {
-                return (TPresenter)Presenter;
+                return (TPresenter)presenter;
             }
 
             var newPresenter = this.resolver.Instantiate<TPresenter>();
@@ -52,13 +56,14 @@ namespace MK.MVP
             return newPresenter;
         }
 
-        private async UniTask BindPresenter<TModel, TView, TPresenter>(TPresenter Presenter, TModel model) where TPresenter : IPresenter where TView : BaseView
+        private async UniTask BindPresenter<TModel, TView, TPresenter>(TPresenter presenter, TModel model) where TPresenter : IPresenter where TView : BaseView
         {
             var view = await this.GetViewAsync<TView>();
 
-            IPresenter PresenterInterface = Presenter;
-            PresenterInterface.BindModel(model);
-            PresenterInterface.BindView(view);
+            var presenterInterface = (IPresenter<TModel>)presenter;
+            presenterInterface.BindModel(model);
+            presenterInterface.BindView(view);
+            this.logger.Info($"Push: {typeof(TPresenter).FullName}");
         }
 
         private IPresenter PopData()
@@ -72,6 +77,7 @@ namespace MK.MVP
 
             peek.Dispose();
             this.viewStack.RemoveAt(this.viewStack.Count - 1);
+            this.logger.Info($"Pop: {peek.GetType().FullName}");
 
             return peek;
         }
