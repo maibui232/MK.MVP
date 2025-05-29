@@ -1,0 +1,10 @@
+{
+  "name": "MK.MVP",
+  "rootNamespace": "MK.MVP",
+  "references": [
+    "UniTask",
+    "MK.AssetsManager",
+    "MK.Extensions",
+    "MK.DependencyInjection"
+  ]
+}
