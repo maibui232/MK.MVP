@@ -5,6 +5,7 @@
     "UniTask",
     "MK.AssetsManager",
     "MK.Extensions",
-    "MK.DependencyInjection"
+    "MK.DependencyInjection",
+    "MK.Log"
   ]
 }
