@@ -11,7 +11,7 @@ namespace MK.MVP
     using UnityEngine;
     using ILogger = MK.Log.ILogger;
 
-    public sealed class ViewUIService : IViewUIService
+    internal sealed class ViewUIService : IViewUIService
     {
         private readonly IAssetsManager assetsManager;
         private readonly IResolver      resolver;

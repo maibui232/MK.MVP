@@ -1,4 +1,4 @@
-namespace MK.MVP.DI
+namespace MK.MVP
 {
     using MK.DependencyInjection;
 
