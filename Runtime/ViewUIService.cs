@@ -5,8 +5,8 @@ namespace MK.MVP
     using System.Linq;
     using Cysharp.Threading.Tasks;
     using MK.AssetsManager;
-    using MK.DependencyInjection;
     using MK.Extensions;
+    using MK.Kernel;
     using MK.Log;
     using UnityEngine;
     using ILogger = MK.Log.ILogger;
